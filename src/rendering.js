@@ -1,11 +1,36 @@
 /**
- * @typedef {number | string | Element | Element[]} Children
- * @typedef {{type: string, props: {}, children: Children | Children[]}} Element
+ * @typedef {number | string | Element | Element[] } Children
+ * @typedef {{type: string, props: {}, children: Children[]}} Element
  *
  */
 
 import xss from "xss";
 
+const voidElements = [
+	"area",
+	"base",
+	"br",
+	"hr",
+	"col",
+	"command",
+	"embed",
+	"hr",
+	"img",
+	"input",
+	"keygen",
+	"link",
+	"meta",
+	"param",
+	"source",
+	"track",
+	"wbr",
+];
+
+/**
+ *
+ * @param {{}} props
+ * @return {string}
+ */
 const renderProps = (props) => {
 	return Object.entries(props)
 		.map(
@@ -17,7 +42,7 @@ const renderProps = (props) => {
 
 /**
  *
- * @param { Children } children
+ * @param { Children[] } children
  * @return {string}
  */
 const renderChildren = (children = []) =>
@@ -33,17 +58,9 @@ const renderChildren = (children = []) =>
 		})
 		.join("");
 
-const extractElementProperties = (element) => {
-	return {
-		type: element.type,
-		props: element.props || {},
-		children: element.children || [],
-	};
-};
-
 /**
  *
- * @param {Element[]} elements
+ * @param {Element[] | Children[]} elements
  * @return {string}
  */
 const renderElements = (elements) => {
@@ -52,14 +69,14 @@ const renderElements = (elements) => {
 
 /**
  *
- * @param {Element} element
+ * @param {Children} element
  * @return {boolean}
  */
 const elementIsObject = (element) => typeof element === "object";
 
 /**
  *
- * @param {Element} element
+ * @param {Children} element
  * @return {boolean}
  */
 const elementIsStringOrNumber = (element) =>
@@ -67,7 +84,7 @@ const elementIsStringOrNumber = (element) =>
 
 /**
  *
- * @param {Element | Element[] }  element
+ * @param {Element | Element[] | Children | Children[] }  element
  * @return {string}
  */
 export const renderToString = (element) => {
@@ -78,27 +95,8 @@ export const renderToString = (element) => {
 	if (elementIsStringOrNumber(element)) {
 		return xss(element.toString());
 	}
-
-	const { type, props, children } = extractElementProperties(element);
-	const voidElements = [
-		"area",
-		"base",
-		"br",
-		"hr",
-		"col",
-		"command",
-		"embed",
-		"hr",
-		"img",
-		"input",
-		"keygen",
-		"link",
-		"meta",
-		"param",
-		"source",
-		"track",
-		"wbr",
-	];
+	// @ts-ignore
+	const { type, props, children } = element;
 
 	if (voidElements.includes(type)) {
 		return `<${type}${renderProps(props)}>`; // no end tag for void HTML elements
@@ -111,7 +109,7 @@ export const renderToString = (element) => {
  *
  * @param { string} type
  * @param {{}} props
- * @param {Children[]} children
+ * @param  {Children[]} children - The rest of the arguments
  * @return {Element}
  */
 export const createElement = (type, props = null, ...children) => ({

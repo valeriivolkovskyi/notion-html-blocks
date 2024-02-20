@@ -14,7 +14,7 @@
  * @typedef {import("@notionhq/client/build/src/api-endpoints").ColumnListBlockObjectResponse} Column
  * @typedef {import("@notionhq/client/build/src/api-endpoints").ColumnBlockObjectResponse} ColumnBlock
  * @typedef {import("@notionhq/client/build/src/api-endpoints").TableBlockObjectResponse} Table
- *
+ * @typedef {import('./rendering.js').Element} Element
  */
 
 import { createElement, renderToString } from "./rendering.js";
@@ -26,28 +26,32 @@ import {
 	createAnnotatedTextElement,
 } from "./helpers.js";
 
-// next block
-
 const blockTransformers = {
 	[t.divider]: () => createElement("hr", { className: "divider" }, null),
-	[t.code]: (block) => createCodeElement(block),
-	[t.image]: (data) => createImageElement(data),
-	[t.bulleted_list_item]: (block) => createRichTextHTMLElement(block),
-	[t.paragraph]: (block) => createRichTextHTMLElement(block),
-	[t.heading_1]: (block) => createRichTextHTMLElement(block),
-	[t.heading_2]: (block) => createRichTextHTMLElement(block),
-	[t.heading_3]: (block) => createRichTextHTMLElement(block),
-	[t.numbered_list_item]: (block) => createRichTextHTMLElement(block),
-	[t.quote]: (block) => createRichTextHTMLElement(block),
-	[t.toggle]: (block) => createRichTextHTMLElement(block),
-	[t.callout]: (block) => createRichTextHTMLElement(block),
-	[t.table]: (block) => createTable(block),
-	[t.table_of_contents]: (block) => null,
-	[t.column]: (block) => {
-		console.log("****** Column", block);
-		return null;
-	},
-	[t.column_list]: (block) => createColumn(block.children),
+	[t.code]: (/** @type {BlockData} */ block) => createCodeElement(block),
+	[t.image]: (/** @type {BlockData} */ block) => createImageElement(block),
+	[t.bulleted_list_item]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.paragraph]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.heading_1]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.heading_2]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.heading_3]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.numbered_list_item]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.quote]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.toggle]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.callout]: (/** @type {BlockData} */ block) =>
+		createRichTextHTMLElement(block),
+	[t.table]: (/** @type {BlockData} */ block) => createTable(block),
+
+	// @ts-ignore
+	[t.table_of_contents]: () => null,
 	// [t.video]: () => null,
 	// [t.to_do]: () => null,
 	// [t.child_database]: () => null,
@@ -65,40 +69,33 @@ const blockTransformers = {
 
 /**
  *
- * @param { ColumnBlock } data
- * @return {Element | null}
- */
-function createColumn(data) {
-		data.results;
-}
-
-/**
- *
  * @param {Table} block
  * @return {Element|null}
  */
 function createTable(block) {
 	const { table, children } = block;
 	const rows = children.results;
-	const {has_column_header, has_row_header} = table
+	const { has_column_header, has_row_header } = table;
 	if (!rows.length) return null;
 
 	let props = {};
 
 	if (has_column_header || has_row_header) {
-		props.className = `${PARAMS.classPrefix}-${has_column_header ? 'column-header' : 'row-header'}`;
+		props.className = `${PARAMS.classPrefix}-${
+			has_column_header ? "column-header" : "row-header"
+		}`;
 	}
 
 	const tableRows = rows.map((block, index) => {
 		const cells = block.table_row.cells.map((cell) => {
 			const textContent = createRichText(cell);
-			return createElement('td', {}, textContent);
+			return createElement("td", {}, textContent);
 		});
 
-		return createElement('tr', {}, cells);
+		return createElement("tr", {}, cells);
 	});
 
-	return createElement('table', props, tableRows);
+	return createElement("table", props, tableRows);
 }
 
 /**
@@ -131,19 +128,23 @@ function createCodeElement(codeBlockData) {
 	const plainTextFromCode = rich_text.map((text) => text.plain_text).join("");
 	const codeCaption = createRichText(caption);
 
-	return createElement("div", { className: `${PARAMS.classPrefix}-code` }, ...[
-		codeCaption &&
+	return createElement(
+		"div",
+		{ className: `${PARAMS.classPrefix}-code` },
+		...[
+			codeCaption &&
+				createElement(
+					"p",
+					{ className: `${PARAMS.classPrefix}-code-caption` },
+					codeCaption,
+				),
 			createElement(
-				"p",
-				{ className: `${PARAMS.classPrefix}-code-caption` },
-				codeCaption,
+				"code",
+				{ className: `${PARAMS.classPrefix}-code-${language}` },
+				plainTextFromCode,
 			),
-		createElement(
-			"code",
-			{ className: `${PARAMS.classPrefix}-code-${language}` },
-			plainTextFromCode,
-		),
-	]);
+		],
+	);
 }
 
 /**

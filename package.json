@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "biome check ./src/** --apply",
+    "format": "biome format ./src/*.js --write",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,7 @@
     "@notionhq/client": "2.2.14"
   },
   "devDependencies": {
+    "biome": "^0.3.3",
     "xss": "^1.0.14"
   }
 }

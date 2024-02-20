@@ -1,7 +1,14 @@
-import {createElement} from "./rendering.js";
+/**
+ * @typedef {import("./rendering.js").Element} Element
+ */
+import { createElement } from "./rendering.js";
 import PARAMS from "./params.js";
 import types from "./blockTypes.js";
 
+/**
+ * @param {string} blockType - The type of the block.
+ * @returns {string} - The corresponding HTML tag.
+ */
 export const mapBlockToTag = (blockType) => {
 	switch (blockType) {
 		case types.paragraph:
@@ -47,6 +54,13 @@ function parseToggleable(isToggleable) {
 	return isToggleable ? ["toggleable", "toggleable-closed"] : [""];
 }
 
+/**
+ * Parses classes for the given element and type.
+ *
+ * @param {import("./transformNotionBlocks.js").BlockData} element - The element to parse classes for.
+ * @param {string} type - The type of class to parse.
+ * @return {string} - The parsed classes as a string.
+ */
 export function parseClasses(element, type) {
 	const baseClass = type;
 	const color = parseColor(element.color);
@@ -60,23 +74,24 @@ export function parseClasses(element, type) {
 
 /**
  *
- * @param {TextData} textData
+ * @param {import("./transformNotionBlocks.js").TextData} textData
  * @return {Element}
  */
 export function createAnnotatedTextElement(textData) {
 	const { href, text, annotations } = textData;
 	let result = text.content;
 	const transformers = [
-		(content) =>
+		(/** @type {Element} */ content) =>
 			href !== null ? createElement("a", { href }, content) : content,
-		(content) => (annotations.bold ? createElement("b", {}, content) : content),
-		(content) =>
+		(/** @type {Element} */ content) =>
+			annotations.bold ? createElement("b", {}, content) : content,
+		(/** @type {Element} */ content) =>
 			annotations.italic ? createElement("i", {}, content) : content,
-		(content) =>
+		(/** @type {Element} */ content) =>
 			annotations.strikethrough ? createElement("s", {}, content) : content,
-		(content) =>
+		(/** @type {Element} */ content) =>
 			annotations.underline ? createElement("u", {}, content) : content,
-		(content) =>
+		(/** @type {Element} */ content) =>
 			annotations.code
 				? createElement(
 						"code",
@@ -85,7 +100,7 @@ export function createAnnotatedTextElement(textData) {
 				  )
 				: content,
 		// Adjusted to add possible handling of an undefined color.
-		(content) => {
+		(/** @type {Element} */ content) => {
 			const color = annotations.color ? parseColor(annotations.color) : "";
 			return color !== ""
 				? createElement("span", { className: `nc-${color}` }, content)
@@ -97,5 +112,3 @@ export function createAnnotatedTextElement(textData) {
 	});
 	return result;
 }
-
-export default { mapBlockToTag, parseClasses, createAnnotatedTextElement };
