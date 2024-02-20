@@ -10,7 +10,7 @@
     "outDir": "./dist",
     "sourceMap": true,
     "target": "esnext",
-    "module": "esnext",
+    "module": "nodenext",
     "strict": true,
     "strictNullChecks": false,
     "moduleResolution": "nodenext"

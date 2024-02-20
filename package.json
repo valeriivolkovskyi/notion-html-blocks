@@ -1,22 +1,23 @@
 {
   "name": "notion-html-blocks",
-  "version": "1.0.0",
+  "version": "0.1.0-beta",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "type": "module",
   "scripts": {
     "lint": "biome check ./src/** --apply",
     "format": "biome format ./src/*.js --write",
     "build": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["notion", "html", "render"],
+  "author": "Valerii Volkovskyi",
   "license": "ISC",
   "peerDependencies": {
-    "@notionhq/client": "2.2.14"
+    "xss": "^1.0.14"
   },
   "devDependencies": {
+    "@notionhq/client": "2.2.14",
     "biome": "^0.3.3",
-    "xss": "^1.0.14"
+    "typescript": "^5.3.3"
   }
 }
