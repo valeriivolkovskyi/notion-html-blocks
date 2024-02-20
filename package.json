@@ -1,11 +1,10 @@
 {
   "name": "notion-html-blocks",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "./dist/index.js",
   "type": "module",
   "scripts": {
-    "prepublishOnly": "npm run build",
     "lint": "biome check ./src/** --apply",
     "format": "biome format ./src/*.js --write",
     "build": "tsc"
