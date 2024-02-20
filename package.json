@@ -1,0 +1,19 @@
+{
+  "name": "notion-html-blocks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "peerDependencies": {
+    "@notionhq/client": "2.2.14"
+  },
+  "devDependencies": {
+    "xss": "^1.0.14"
+  }
+}
