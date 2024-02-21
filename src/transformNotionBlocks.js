@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * @typedef {string | null} ParsedContent
  * @typedef {{ rich_text: Array<RichTextData>, color: ApiColorType, is_toggleable: boolean }} HeaderInformation

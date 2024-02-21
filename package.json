@@ -1,11 +1,21 @@
 {
   "name": "notion-html-blocks",
   "version": "0.1.4",
-  "description": "",
+  "description": "Zero dependency library to generate HTML from Notion Api blocks",
+  "homepage": "https://github.com/valeriivolkovskyi/notion-html-blocks#readme",
+  "bugs": "https://github.com/valeriivolkovskyi/notion-html-blocks/issues",
+  "files": [
+    "package.json", "README.md", "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/valeriivolkovskyi/notion-html-blocks.git"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
+    "prepublishOnly": "npm run build",
     "lint": "biome check ./src/** --apply",
     "format": "biome format ./src/*.js --write",
     "build": "tsc"
