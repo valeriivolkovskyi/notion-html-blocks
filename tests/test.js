@@ -2975,5 +2975,5 @@ const testData = [
 const test = renderBlockList(testData[1].blocks.results);
 const test1 = renderBlock(testData[1].blocks.results[14]);
 
-// console.log(test);
-console.log(test1);
+console.log(test);
+// console.log(test1);

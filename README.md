@@ -64,7 +64,15 @@ fs.writeFile('./blocks.html', JSON.stringify({blocks: content}))
 ```
 
 
-If you need to insert result  to DOM, you should use `<template>` element:
+If you need to insert result  to DOM, you should use `DOMParser`:
+```javascript
+const parser = new DOMParser();
+
+const html = parser.parseFromString(`<div id="my-content">${renderBlocks(blocks)}</div>`, 'text/html');
+const content = html.getElementById("my-content")
+document.body.append(content);
+```
+or  `<template>` element:
 ```javascript
 const template = document.createElement('template');
 template.innerHTML = renderBlock(block);
@@ -72,8 +80,6 @@ template.innerHTML = renderBlock(block);
 const html = template.content.children;
 document.body.append(html);
 ```
-
-
 
 ### Supported types:
 * divider
