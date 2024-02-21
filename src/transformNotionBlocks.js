@@ -152,7 +152,7 @@ function createCodeElement(codeBlockData) {
  * @param {BlockData } block
  */
 function getChildren(block) {
-	return transformBlockList(block.children);
+	return transformBlockList(block.children.results);
 }
 
 /**
