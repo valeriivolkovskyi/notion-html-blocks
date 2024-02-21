@@ -7,9 +7,18 @@ extract specific page blocks which then can be converted into HTML content like 
 ```javascript
 import { renderBlocks } from 'notion-html-block'
 
+// use notion SDK to get blocks
 const pageBlocks = await notion.blocks.children.list({ block_id: id });
 
-renderBlocks(pageBlocks);
+// retrieve nested blocks
+for (const block of pageBlocks.results) {
+  if (block.has_children) {
+    block.children = await getPageBlocks(block.id);
+  }
+}
+
+// get html for blocks list
+const html = renderBlocks(pageBlocks.results);
 ```
 
 Example output for toggleable heading block:

@@ -4,8 +4,6 @@
  *
  */
 
-import xss from "xss";
-
 const voidElements = [
 	"area",
 	"base",
@@ -27,7 +25,22 @@ const voidElements = [
 ];
 
 /**
- *
+ * Escape HTML special chars
+ * @param {string} text
+ * @return {string}
+ */
+function xss(text) {
+    return text
+        .toString()
+				.replace(/`/g, "&#96;")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+/**
  * @param {{}} props
  * @return {string}
  */

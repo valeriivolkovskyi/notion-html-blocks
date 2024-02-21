@@ -13,15 +13,12 @@
   "keywords": [
     "notion",
     "html",
-    "render"
+    "render",
+    "notion-api"
   ],
   "author": "Valerii Volkovskyi",
   "license": "ISC",
-  "peerDependencies": {
-    "xss": "^1.0.14"
-  },
   "devDependencies": {
-    "@notionhq/client": "2.2.14",
     "biome": "^0.3.3",
     "typescript": "^5.3.3"
   }
