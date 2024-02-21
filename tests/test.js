@@ -1,4 +1,4 @@
-import {renderBlockList} from '../src/index.js';
+import {renderBlockList, renderBlock} from '../src/index.js';
 
 const testData = [
       {
@@ -2973,5 +2973,7 @@ const testData = [
     ];
 
 const test = renderBlockList(testData[1].blocks.results);
+const test1 = renderBlock(testData[1].blocks.results[14]);
 
-console.log(test);
+// console.log(test);
+console.log(test1);
