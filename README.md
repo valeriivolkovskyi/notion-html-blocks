@@ -52,7 +52,7 @@ const block = {
 
 const content = renderBlock(block)
 ```
-### Recipies
+### Recipes
 
 Generate static files for your static site generator:
 ```javascript
@@ -60,11 +60,10 @@ import fs from "fs";
 const content = renderBlocks(blocks);
 
 fs.writeFile('./blocks.html', content)
-fs.writeFile('./blocks.html', JSON.stringify({blocks: content}))
+fs.writeFile('./blocks.json', JSON.stringify({blocks: content}))
 ```
 
-
-If you need to insert result  to DOM, you should use `DOMParser`:
+If you need to insert output HTML to DOM, you cna use `DOMParser`:
 ```javascript
 const parser = new DOMParser();
 
