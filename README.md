@@ -81,16 +81,17 @@ document.body.append(html);
 ```
 
 ### Supported types:
-* divider
-* code
-* image
-* bulleted_list_item
-* paragraph
 * heading_1
 * heading_2
 * heading_3
+* code
+* image
+* bulleted_list_item
 * numbered_list_item
+* paragraph
 * quote
 * toggle
-* callout
 * table
+* columns
+* callout
+* divider

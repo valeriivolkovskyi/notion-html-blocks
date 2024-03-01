@@ -13,7 +13,7 @@
  * @typedef {import("@notionhq/client/build/src/api-endpoints").CodeBlockObjectResponse} CodeBlockData
  * @typedef {import("@notionhq/client/build/src/api-endpoints").ListBlockChildrenResponse} ListBlockChildrenResponse
  * @typedef {import("@notionhq/client/build/src/api-endpoints").PartialBlockObjectResponse} PartialBlockObjectResponse
- * @typedef {import("@notionhq/client/build/src/api-endpoints").ColumnListBlockObjectResponse} Column
+ * @typedef {import("@notionhq/client/build/src/api-endpoints.js").ColumnListBlockObjectResponse} ColumnList
  * @typedef {import("@notionhq/client/build/src/api-endpoints").ColumnBlockObjectResponse} ColumnBlock
  * @typedef {import("@notionhq/client/build/src/api-endpoints").TableBlockObjectResponse} Table
  * @typedef {import('./rendering.js').Element} Element
@@ -51,9 +51,11 @@ const blockTransformers = {
 	[t.callout]: (/** @type {BlockData} */ block) =>
 		createRichTextHTMLElement(block),
 	[t.table]: (/** @type {BlockData} */ block) => createTable(block),
+	[t.column_list]: (/** @type {BlockData} */ block) => createColumnList(block),
+	[t.column]: (/** @type {BlockData} */ block) => block.children ? getChildren(block) : null,
 
 	// @ts-ignore
-	[t.table_of_contents]: () => null,
+	// [t.table_of_contents]: () => null,
 	// [t.video]: () => null,
 	// [t.to_do]: () => null,
 	// [t.child_database]: () => null,
@@ -68,6 +70,21 @@ const blockTransformers = {
 	// [t.pdf]: () => null,
 	// [t.synced_block]: () => null,
 };
+
+/**
+ *
+ * @param {ColumnList} block
+ * @return {Element|null}
+ */
+function createColumnList(block) {
+	if (!block.children?.results.length) return null;
+
+	const children = getChildren(block);
+	let number = block.children.results.length;
+
+	return createElement('div', {className: `${PARAMS.classPrefix}-column-list-${number}`}, children);
+}
+
 
 /**
  *
